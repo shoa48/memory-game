@@ -34,13 +34,13 @@ h1 {
 }
 
 /*
- * Styles for the deck of cards
+ * Styles for the deckk of cards
  */
 
-.deck {
+.deckk {
     width: 660px;
     min-height: 680px;
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    background: linear-gradient(160deg, #888 0%, #888 100%);
     padding: 32px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
@@ -51,10 +51,10 @@ h1 {
     margin: 0 0 3em;
 }
 
-.deck .card {
+.deckk .card {
     height: 125px;
     width: 125px;
-    background: #2e3d49;
+    background: #222;
     font-size: 0;
     color: #ffffff;
     border-radius: 8px;
@@ -65,22 +65,54 @@ h1 {
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
-.deck .card.open {
+.deckk .card.open {
     transform: rotateY(0);
-    background: #02b3e4;
+    background: #54cdf9;
     cursor: default;
 }
 
-.deck .card.show {
+.deckk .card.show {
     font-size: 33px;
 }
 
-.deck .card.match {
+.deckk .card.match {
     cursor: default;
-    background: #02ccba;
+    background: #e06797;
     font-size: 33px;
+    border-radius: 70px;
+    transition: 1s;
 }
 
+.deckk .card.disabled {
+    cursor: default;
+    pointer-events: none;
+}
+
+/*Shake function from: https://css-tricks.com/snippets/css/shake-css-keyframe-animation/*/
+.deckk .card.unmatched {
+    cursor: default;
+    background: #d13434;
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translated(0, 0, 0);
+    perspective: 1000px;
+}
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
 /*
  * Styles for the Score Panel
  */
@@ -95,12 +127,16 @@ h1 {
     margin: 0;
     padding: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
+    margin: 0 3px 0 0;
+}
+.time {
+    margin-left: 40px;
 }
 
 .score-panel .stars li {
     list-style: none;
     display: inline-block;
+    color: gold;
 }
 
 .score-panel .restart {
