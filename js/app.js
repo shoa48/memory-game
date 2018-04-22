@@ -1,13 +1,14 @@
 /*
 * Create a list that holds all of your cards
 */
+// import swal from 'sweetalert';
 let card = document.getElementsByClassName("card");
 let cards = [...card];
 const deck = document.querySelector('.deckk');
-let moveCounter = document.getElementById("moves")
+let moveCounter = document.getElementById("moves");
 let moves;
 let stars;
-let matched = 0;
+let matched;
 var openedCards = [];
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -25,47 +26,45 @@ function shuffle(array) {
 
 document.body.onload = newGame();
 function newGame() {
-	//  shuffle the list of cards using the provided "shuffle" method below
 	let shflCards = shuffle(cards);
-	// reset the cards
-	// loop through each card and create its HTML
-	// add each card's HTML to the page
+/*	
+* reset the cards, moves, timer
+* loop through each card and create its HTML
+* add each card's HTML to the page
+*/
 	deck.innerHTML = "";
 	for (var i = 0; i < shflCards.length; i++){
-		[].forEach.call(shflCards, function(item) {
-		deck.appendChild(item);
-	});
+		deck.appendChild(shflCards[i]);
 		shflCards[i].classList.remove("show", "open", "match", "disabled");
 	}
-	// reset moves
 	moves = 0;
 	moveCounter.innerHTML = moves;
-	// reset stars
 	var starUl = document.querySelector(".stars");
-	for (var i= stars; i<3; i++){
+	for (i= stars; i<3; i++){
 		console.log(stars);
 		var starLi = document.createElement('li');
 		starLi.innerHTML = '<li><i class="fa fa-star"></i></li>';
 		starUl.appendChild(starLi);
 	}
 	stars=3;
-	//reset timer
 	second = 0;
 	minute = 0; 
 	var timer = document.querySelector(".time");
 	timer.innerHTML = "00:0";
 	clearInterval(interval);
+	startTimer();
+	matched=0;
 }
 
 var showCard = function (evt){
-	const selectedCard = evt.target;
+	var selectedCard = evt.target;
 	selectedCard.classList.add('open');
 	selectedCard.classList.add('show');
 	selectedCard.classList.add('disabled');
 };
 
 var openCard = function (evt){
-	const selectedCard = evt.target;
+	var selectedCard = evt.target;
 	openedCards.push(selectedCard);
 	var length = openedCards.length;
 	if(length == 2){
@@ -100,36 +99,28 @@ function noMatch(){
 		openedCards = [];
 	},450);
 }
-
-// Function to count the moves 
+/**
+* @description count the moves
+*/
 function movesInc() {
 	moves++;
 	moveCounter.innerHTML = moves;
-	if(moves == 1){
-		second = 0;
-		minute = 0; 
-		startTimer();
-	}
-	if(moves == 7) {
+	if(moves == 14) {
 		removeStar();
 	}
-	if(moves == 15) {
+	if(moves == 24) {
 		removeStar();
-	}
-	if(moves == 25) {
-		removeStar();
-		gameOver("Lost stars");
 	}
 }
-
+/**
+* @description remove one star and sutract stars
+*/
 function removeStar() {
-	// var starUl = document.querySelector(".stars");
 	var filledStar = document.querySelector(".fa-star");
 	filledStar.parentNode.removeChild(filledStar);
 	stars -=1;
 }
 
-//  startTimer from: http://jsfiddle.net/wr1ua0db/17/
 var second = 0, minute = 0;
 var timer = document.querySelector(".time");
 var interval;
@@ -141,66 +132,48 @@ function startTimer(){
 			minute++;
 			second=0;
 		}
-		if(minute == 1){
-			gameOver("Time ended");
-		}
 	},1000);
 }
 
-// Add event listener to show functions when card clicked.
 for (var i = 0; i < cards.length; i++){
 	let card=cards[i];
 	card.addEventListener("click", showCard);
 	card.addEventListener("click", openCard);
 }
 
-// PopUp messages fromA: https://sweetalert.js.org
-// If time or stars ended, player lost
-function gameOver(string) {
-	swal({
-		title: "Game Over",
-		text: string,
-		icon: "warning",
-		buttons: ["Exit","Play Again"],
-		dangerMode: true,
-	}).then((playAgain) => {
-		if (playAgain) {
-			second = 0, minute = 0;
-			newGame();
-		}else {
-			clearTimeout(interval);
-			for (var i = 0; i < cards.length; i++){
-				cards[i].classList.add("open","disabled");
-			}
-		}
-	});
-}
-
-// To congrats the player and display his score ff the cards matched.
+/*
+* PopUp messages from: https://sweetalert.js.org
+*/
 function gameFinished(){
-	matched == 0;
+	clearInterval(interval);
+	console.log(interval);
 	swal({
 		title: "Good job! You Won!",
-		text: "with "+moves+" moves and "+stars+" stars.",
+		text: "with "+moves+" moves and "+stars+" stars.\n Within "+minute+" mins and "+second+" secs",
 		icon: "success",
 		button: "Play Again!",
 		}).then((playAgain) => {
 		if (playAgain) {
-			second = 0, minute = 0;
 			newGame();
 		}
 	});	
 }
 
-//  source:https://scotch.io/tutorials/how-to-build-a-memory-matching-game-in-javascript
-//disable cards temporarily
+
+
+/**
+* @description disable cards temporarily
+* source:https://scotch.io/tutorials/how-to-build-a-memory-matching-game-in-javascript
+*/
 function disable() {
 	let card = document.getElementsByClassName("card");
 	Array.prototype.filter.call(card, function (card) {
 	card.classList.add("disabled");
 	});
 }
-//enable cards and disable matched cards
+/**
+* @description enable cards and disable matched cards
+*/
 function enable() {
 	let card = document.getElementsByClassName("card");
 	Array.prototype.filter.call(card, function (card) {

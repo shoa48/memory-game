@@ -38,8 +38,8 @@ h1 {
  */
 
 .deckk {
-    width: 660px;
-    min-height: 680px;
+    width: 600px;
+    min-height: 620px;
     background: linear-gradient(160deg, #888 0%, #888 100%);
     padding: 32px;
     border-radius: 10px;
@@ -84,8 +84,8 @@ h1 {
 }
 
 .deckk .card.disabled {
-    cursor: default;
     pointer-events: none;
+    cursor: default;
 }
 
 /*Shake function from: https://css-tricks.com/snippets/css/shake-css-keyframe-animation/*/
